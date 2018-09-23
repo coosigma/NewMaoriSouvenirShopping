@@ -31,10 +31,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="font-size: 18px">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
-                    <li><a asp-area="" asp-controller="Customers" asp-action="Index"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Customers</a></li>
-					@if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin"))
 					{
-						<li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Members</a></li>
+						<li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Members</a></li>
 					}
                     <li><a asp-area="" asp-controller="Souvenirs" asp-action="Index"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Souvenirs</a></li>
                     <li><a asp-area="" asp-controller="Orders" asp-action="Index"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Orders</a></li>
