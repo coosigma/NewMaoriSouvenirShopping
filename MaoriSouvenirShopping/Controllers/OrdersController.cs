@@ -3,57 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MaoriSouvenirShopping.Data;
 using MaoriSouvenirShopping.Models;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 
 namespace MaoriSouvenirShopping.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly WebShopContext _context;
+        private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public OrdersController(WebShopContext context)
+        public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var webShopContext = _context.Orders.Include(o => o.Customer);
-            return View(await webShopContext.ToListAsync());
-        }
-
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.OrderItems)
-                    .ThenInclude(o => o.Souvenir)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.OrderID == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
+            return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
         }
 
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID");
-            //ViewBag.Status = Enum.GetNames(typeof(Status)).ToList();
-            //ViewData["Status"] = Enum.GetNames(typeof(Status)).ToList();
             return View();
         }
 
@@ -62,77 +39,58 @@ namespace MaoriSouvenirShopping.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderDate,Status,CustomerID,TotalCost")] Order order)
+        public async Task<IActionResult> Create([Bind("City,Country,FirstName,LastName,PhoneNumber,PostalCode,State")] Order order)
         {
-            try
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+
+                ShoppingCart cart = ShoppingCart.GetCart(this.HttpContext);
+                List<CartItem> items = cart.GetCartItems(_context);
+                List<OrderDetail> details = new List<OrderDetail>();
+                foreach (CartItem item in items)
                 {
-                    _context.Add(order);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+
+                    OrderDetail detail = CreateOrderDetailForThisItem(item);
+                    detail.Order = order;
+                    details.Add(detail);
+                    _context.Add(detail);
+
                 }
+                order.User = user;
+                order.OrderDate = DateTime.Today;
+                order.TotalCost = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
+                order.OrderDetails = details;
+                _context.SaveChanges();
+                return RedirectToAction("Purchased", new RouteValueDictionary(
+                new { action = "Purchased", id = order.OrderID }));
             }
-            catch (DbUpdateException /* ex */)
-            {
-                //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
-            }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
             return View(order);
         }
-
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        private OrderDetail CreateOrderDetailForThisItem(CartItem item)
+        {
+            OrderDetail detail = new OrderDetail();
+            detail.Quantity = item.Count;
+            detail.Souvenir = item.Souvenir;
+            detail.UnitPrice = item.Souvenir.Price;
+            return detail;
+        }
+        public async Task<IActionResult> Purchased(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);
+            var order = await _context.Orders.Include(i => i.User).AsNoTracking().SingleOrDefaultAsync(m => m.OrderID == id);
             if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
+            var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID).Include(detail => detail.Souvenir).ToList();
+            order.OrderDetails = details;
+            ShoppingCart.GetCart(this.HttpContext).EmptyCart(_context);
             return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var orderToUpdate = await _context.Orders.SingleOrDefaultAsync(s => s.OrderID == id);
-            if (await TryUpdateModelAsync<Order>(
-                orderToUpdate,
-                "",
-                o => o.OrderDate, o => o.Status, o => o.CustomerID, o => o.TotalCost))
-            {
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", orderToUpdate.CustomerID);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (DbUpdateException /* ex */)
-                {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
-                }
-            }
-            return View(orderToUpdate);
         }
 
         // GET: Orders/Delete/5
@@ -142,15 +100,17 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
-
             var order = await _context.Orders
-                .Include(o => o.Customer)
+                .Include(o => o.User)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.OrderID == id);
             if (order == null)
             {
                 return NotFound();
             }
+            var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID)
+                .Include(detail => detail.Souvenir).ToList();
+            order.OrderDetails = details;
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewData["ErrorMessage"] =
@@ -172,7 +132,6 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
             try
             {
                 _context.Orders.Remove(order);
@@ -184,11 +143,6 @@ namespace MaoriSouvenirShopping.Controllers
                 //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }           
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.OrderID == id);
         }
     }
 }

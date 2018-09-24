@@ -12,10 +12,10 @@ namespace MaoriSouvenirShopping.Data
         {
             context.Database.EnsureCreated();
             // Look for any Customer.
-            if (context.OrderItems.Any())
-            {
-                return;   // DB has been seeded
-            }
+            //if (context.OrderItems.Any())
+            //{
+            //    return;   // DB has been seeded
+            //}
             //var customers = new Customer[]
             //{
             //     new Customer{LastName="John", FirstName="Tom", PhoneNumber="0211231234", Email="TJohn@gmail.com", Address="139 Carrington RD, Auckland"},

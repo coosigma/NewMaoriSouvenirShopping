@@ -17,12 +17,14 @@ namespace MaoriSouvenirShopping.Controllers
 {
     public class SouvenirsController : Controller
     {
+        private readonly ApplicationDbContext a_context;
         private readonly WebShopContext _context;
         private readonly IHostingEnvironment _hostingEnv;
 
-        public SouvenirsController(WebShopContext context, IHostingEnvironment hEnv)
+        public SouvenirsController(WebShopContext context, ApplicationDbContext acontext, IHostingEnvironment hEnv)
         {
             _context = context;
+            a_context = acontext;
             _hostingEnv = hEnv;
         }
 
@@ -95,8 +97,8 @@ namespace MaoriSouvenirShopping.Controllers
             var souvenir = await _context.Souvenirs
                 .Include(s => s.Category)
                 .Include(s => s.Supplier)
-                .Include(s => s.OrderItems)
-                    .ThenInclude(e => e.Order)
+                //.Include(s => s.OrderItem)
+                    //.ThenInclude(e => e.Order)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.SouvenirID == id);
             if (souvenir == null)

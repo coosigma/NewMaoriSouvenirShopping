@@ -8,7 +8,7 @@ namespace MaoriSouvenirShopping.Models
     {
         public int SouvenirID { get; set; }
         public string SouvenirName { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public string PhotoPath { get; set; }
         public string Description { get; set; }
         public int CategoryID { get; set; }
@@ -24,8 +24,6 @@ namespace MaoriSouvenirShopping.Models
         {
             get { return Supplier.FullName; }
         }
-
-        public ICollection<OrderItem> OrderItems { get; set; }
-
+        //public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

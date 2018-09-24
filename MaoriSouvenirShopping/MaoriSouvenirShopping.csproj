@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-MaoriSouvenirShopping-720FAEC8-6436-4F3A-B802-010D05F9DA41</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\CustomersController.cs" />
+    <Compile Remove="Models\OrderItem.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.1.3" />
@@ -34,6 +39,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\ShoppingCartViewModel\" />
   </ItemGroup>
 
 </Project>
