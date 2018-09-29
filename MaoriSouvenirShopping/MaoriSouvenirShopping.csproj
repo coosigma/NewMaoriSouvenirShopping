@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Components\ShoppingCartViewModel\" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>

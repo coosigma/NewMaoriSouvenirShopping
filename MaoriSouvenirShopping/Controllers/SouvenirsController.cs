@@ -11,20 +11,20 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace MaoriSouvenirShopping.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SouvenirsController : Controller
     {
-        private readonly ApplicationDbContext a_context;
-        private readonly WebShopContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _hostingEnv;
 
-        public SouvenirsController(WebShopContext context, ApplicationDbContext acontext, IHostingEnvironment hEnv)
+        public SouvenirsController(ApplicationDbContext context,IHostingEnvironment hEnv)
         {
             _context = context;
-            a_context = acontext;
             _hostingEnv = hEnv;
         }
 
@@ -156,8 +156,8 @@ namespace MaoriSouvenirShopping.Controllers
                 {
                     _context.Add(souvenir);
                     await _context.SaveChangesAsync();
-                    //ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
-                    //ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
+                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenir.CategoryID);
+                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenir.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -294,7 +294,15 @@ namespace MaoriSouvenirShopping.Controllers
             try
             {
                 _context.Souvenirs.Remove(souvenir);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException s)
+                {
+                    TempData["SouvenirUsed"] = "The Souvenir being deleted has been used in previous orders.Delete those orders before trying again.";
+                    return RedirectToAction("Delete");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException /* ex */)

@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MaoriSouvenirShopping.Data;
 using MaoriSouvenirShopping.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace MaoriSouvenirShopping.Controllers
 {
+    [AllowAnonymous]
+    [Authorize(Roles = "Member")]
     public class ShoppingCartController : Controller
     {
         ApplicationDbContext _context;
@@ -30,13 +33,13 @@ namespace MaoriSouvenirShopping.Controllers
         public ActionResult AddToCart(int id)
         {
             // Retrieve the album from the database
-            var addedTutorial = _context.Souvenirs
+            var addedSouvenir = _context.Souvenirs
                 .Single(souvenir => souvenir.SouvenirID == id);
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.AddToCart(addedTutorial, _context);
+            cart.AddToCart(addedSouvenir, _context);
             // Go back to the main store page for more shopping
-            return RedirectToAction("Index", "Tutorials");
+            return RedirectToAction("Index", "MemberSouvenirs");
         }
 
         public ActionResult RemoveFromCart(int id)

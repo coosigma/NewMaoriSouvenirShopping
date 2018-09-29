@@ -6,9 +6,7 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.TotalCost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th></th>
         </tr>
@@ -46,11 +44,9 @@
                 @Html.DisplayFor(modelItem => item.TotalCost)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.CustomerID)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
             </td>
         </tr>

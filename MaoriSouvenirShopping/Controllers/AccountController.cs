@@ -239,6 +239,7 @@ namespace MaoriSouvenirShopping.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email
+                    , FirstName = model.FirstName, LastName = model.LastName
                     , Address = model.Address, Enabled = true };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

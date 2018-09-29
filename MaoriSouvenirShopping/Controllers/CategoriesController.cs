@@ -12,9 +12,9 @@ namespace MaoriSouvenirShopping.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly WebShopContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CategoriesController(WebShopContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }

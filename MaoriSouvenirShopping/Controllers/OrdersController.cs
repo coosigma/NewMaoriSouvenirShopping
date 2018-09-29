@@ -8,9 +8,11 @@ using MaoriSouvenirShopping.Data;
 using MaoriSouvenirShopping.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MaoriSouvenirShopping.Controllers
 {
+    [Authorize(Roles = "Admin,Member")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,12 +25,14 @@ namespace MaoriSouvenirShopping.Controllers
         }
 
         // GET: Orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Member")]
         public IActionResult Create()
         {
             return View();
@@ -39,6 +43,7 @@ namespace MaoriSouvenirShopping.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> Create([Bind("City,Country,FirstName,LastName,PhoneNumber,PostalCode,State")] Order order)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
@@ -94,6 +99,7 @@ namespace MaoriSouvenirShopping.Controllers
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -123,6 +129,7 @@ namespace MaoriSouvenirShopping.Controllers
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Orders
