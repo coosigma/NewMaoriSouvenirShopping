@@ -8,7 +8,7 @@ namespace MaoriSouvenirShopping.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(WebShopContext context)
+        public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
             // Look for any Customer.

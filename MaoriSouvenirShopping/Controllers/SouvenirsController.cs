@@ -112,7 +112,7 @@ namespace MaoriSouvenirShopping.Controllers
         // GET: Souvenirs/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", 2);
             ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName");
             return View();
         }
@@ -156,7 +156,7 @@ namespace MaoriSouvenirShopping.Controllers
                 {
                     _context.Add(souvenir);
                     await _context.SaveChangesAsync();
-                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenir.CategoryID);
+                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", 2);
                     ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenir.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }

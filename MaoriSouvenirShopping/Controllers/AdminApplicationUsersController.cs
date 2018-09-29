@@ -53,5 +53,62 @@ namespace MaoriSouvenirShopping.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        // GET: AdminApplicationUsers/Delete/5
+        public async Task<IActionResult> Delete(string id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.ApplicationUser
+                .Include(u => u.Orders)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+            return View(user);
+        }
+
+        // POST: AdminApplicationUsers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _context.ApplicationUser
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            try
+            {
+                _context.ApplicationUser.Remove(user);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException s)
+                {
+                    TempData["UserUsed"] = "The Member being deleted has been used in previous orders.Delete those orders before trying again.";
+                    return RedirectToAction("Delete");
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
+        }
     }
 }

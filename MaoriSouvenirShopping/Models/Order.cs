@@ -25,8 +25,5 @@ namespace MaoriSouvenirShopping.Models
         public decimal TotalCost { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
         public ApplicationUser User { get; set; }
-        //public int CustomerID { get; set; }
-        //public Customer Customer { get; set; }
-        //public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

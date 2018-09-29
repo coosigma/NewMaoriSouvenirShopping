@@ -227,6 +227,7 @@ namespace MaoriSouvenirShopping.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["NoCart"] = "true";
             return View();
         }
 
@@ -259,6 +260,7 @@ namespace MaoriSouvenirShopping.Controllers
                 AddErrors(result);
             }
 
+            ViewData["NoCart"] = "true";
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -365,6 +367,7 @@ namespace MaoriSouvenirShopping.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            ViewData["NoCart"] = "true";
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -406,6 +409,7 @@ namespace MaoriSouvenirShopping.Controllers
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
         {
+            ViewData["NoCart"] = "true";
             return View();
         }
 
@@ -418,6 +422,7 @@ namespace MaoriSouvenirShopping.Controllers
                 throw new ApplicationException("A code must be supplied for password reset.");
             }
             var model = new ResetPasswordViewModel { Code = code };
+            ViewData["NoCart"] = "true";
             return View(model);
         }
 
@@ -442,6 +447,7 @@ namespace MaoriSouvenirShopping.Controllers
                 return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
             AddErrors(result);
+            ViewData["NoCart"] = "true";
             return View();
         }
 
@@ -449,6 +455,7 @@ namespace MaoriSouvenirShopping.Controllers
         [AllowAnonymous]
         public IActionResult ResetPasswordConfirmation()
         {
+            ViewData["NoCart"] = "true";
             return View();
         }
 
@@ -456,6 +463,7 @@ namespace MaoriSouvenirShopping.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            ViewData["NoCart"] = "true";
             return View();
         }
 

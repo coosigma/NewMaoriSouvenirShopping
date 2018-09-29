@@ -7,6 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\CustomersController.cs" />
+    <Compile Remove="Data\WebShopContext.cs" />
+    <Compile Remove="Migrations\20180929114142_debug.cs" />
+    <Compile Remove="Migrations\20180929114142_debug.Designer.cs" />
+    <Compile Remove="Migrations\20180929114424_debug.cs" />
+    <Compile Remove="Migrations\20180929114424_debug.Designer.cs" />
     <Compile Remove="Models\OrderItem.cs" />
   </ItemGroup>
 
@@ -43,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
