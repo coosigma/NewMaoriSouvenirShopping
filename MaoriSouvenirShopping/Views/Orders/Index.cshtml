@@ -47,13 +47,13 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @if (item.Status == Status.Ordered)
+                @if (item.Status == Status.Shipped)
                 {
-                    <a asp-action="WaitShip" asp-route-id="@item.OrderID">Ship</a>;
+                    <a asp-action="WaitShip" asp-route-id="@item.OrderID">Wait</a>;
                 }
                 else
                 {
-                    <a asp-action="WaitShip" asp-route-id="@item.OrderID">Wait</a>
+                    <a asp-action="WaitShip" asp-route-id="@item.OrderID">Ship</a>
                 }|
                 <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a>|
                 <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>

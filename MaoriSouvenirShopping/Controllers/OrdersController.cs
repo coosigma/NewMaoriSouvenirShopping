@@ -110,7 +110,7 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
-            order.Status = (order.Status == Status.Shipped)? Status.Ordered : Status.Shipped;
+            order.Status = (order.Status == Status.Shipped)? Status.Waiting : Status.Shipped;
             _context.Update(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

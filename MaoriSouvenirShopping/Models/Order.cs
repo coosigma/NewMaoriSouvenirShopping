@@ -6,7 +6,7 @@ namespace MaoriSouvenirShopping.Models
 {
     public enum Status
     {
-        Ordered, Billed, Paid, Shipped, Cancelled
+        Waiting, Ordered, Billed, Paid, Shipped, Cancelled
     }
     public class Order
     {
