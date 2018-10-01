@@ -49,6 +49,7 @@
         <dd>
             <table class="table">
                 <tr>
+                    <th>Item ID</th>
                     <th>Souvenir</th>
                     <th>Category</th>
                     <th>Quantity</th>
@@ -57,6 +58,9 @@
                 @foreach (var item in Model.OrderDetails)
                 {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Souvenir.SouvenirID)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Souvenir.SouvenirName)
                     </td>
@@ -72,6 +76,7 @@
                 </tr>
                 }
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>
