@@ -36,6 +36,11 @@
                     <input type="submit" value="Search" class="btn btn-default" /> |
                     <a asp-action="Index">Back to Full List</a>
                 </p>
+                <p>
+                    Price range: <input type="text" name="lower_price" value="@ViewData["lowerPrice"]" onkeyup="value=value.replace(/[^\d.]/g,'')" />
+                    - <input type="text" name="upper_price" value="@ViewData["upperPrice"]" onkeyup="value=value.replace(/[^\d.]/g,'')" />
+                    <input type="submit" value="Filter this Price Range" class="btn btn-default" />
+                </p>
             </div>
         </form>
         <table class="table">

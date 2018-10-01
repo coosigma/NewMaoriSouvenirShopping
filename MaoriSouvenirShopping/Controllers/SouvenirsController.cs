@@ -33,15 +33,21 @@ namespace MaoriSouvenirShopping.Controllers
             string sortOrder,
             string currentFilter,
             string currentCategory,
+            decimal? currentLowerPrice,
+            decimal? currentUpperPrice,
             string searchString,
             string category,
+            decimal? lower_price,
+            decimal? upper_price,
             int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
+            ViewData["lowerPrice"] = lower_price;
+            ViewData["upperPrice"] = upper_price;
             ViewData["CurrentCategory"] = category;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
-            if (searchString != null || category != null)
+            if (searchString != null || category != null || lower_price != null || upper_price != null)
             {
                 page = 1;
             }
@@ -51,6 +57,13 @@ namespace MaoriSouvenirShopping.Controllers
                     searchString = currentFilter;
                 if (category == null)
                     category = currentCategory;
+                if(lower_price == null && upper_price == null)
+                {
+                    lower_price = currentLowerPrice;
+                    upper_price = currentUpperPrice;
+                }
+                    
+
             }
             ViewData["CurrentFilter"] = searchString;
 
@@ -82,6 +95,22 @@ namespace MaoriSouvenirShopping.Controllers
                     souvenirs = souvenirs.OrderBy(s => s.SouvenirName);
                     break;
             }
+            if(lower_price != null || upper_price != null)
+            {
+                if (lower_price != null && upper_price != null)
+                {
+                    souvenirs = souvenirs.Where(s => s.Price >= lower_price && s.Price <= upper_price);
+                }
+                else if (lower_price == null)
+                {
+                    souvenirs = souvenirs.Where(s => s.Price <= upper_price);
+                }
+                else
+                {
+                    souvenirs = souvenirs.Where(s => s.Price >= lower_price);
+                }
+            }
+
             int pageSize = 10;
             return View(await PaginatedList<Souvenir>.CreateAsync(souvenirs.AsNoTracking(), page ?? 1, pageSize));
         }
