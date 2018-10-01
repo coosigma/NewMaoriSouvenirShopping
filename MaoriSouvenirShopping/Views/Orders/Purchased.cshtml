@@ -57,24 +57,46 @@
                 </tr>
                 @foreach (var item in Model.OrderDetails)
                 {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Souvenir.SouvenirID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Souvenir.SouvenirName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Souvenir.Category.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Souvenir.Price)
+                        </td>
+                    </tr>
+                }
                 <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Souvenir.SouvenirID)
+                        <label>Sub Total:</label>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Souvenir.SouvenirName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Souvenir.Category.CategoryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Souvenir.Price)
+                        @Html.DisplayFor(modelItem => Model.SubTotal)
                     </td>
                 </tr>
-                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <label>Total GST:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.TotalGST)
+                    </td>
+                </tr>
                 <tr>
                     <td></td>
                     <td></td>

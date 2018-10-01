@@ -23,6 +23,8 @@ namespace MaoriSouvenirShopping.Models
         public DateTime OrderDate { get; set; }
         public Status Status { get; set; }
         public decimal TotalCost { get; set; }
+        public decimal TotalGST => Math.Round(TotalCost * (decimal)0.15, 2);
+        public decimal SubTotal => Math.Round(TotalCost - TotalGST, 2);
         public List<OrderDetail> OrderDetails { get; set; }
         public ApplicationUser User { get; set; }
     }
