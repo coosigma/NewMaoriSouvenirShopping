@@ -97,7 +97,24 @@ namespace MaoriSouvenirShopping.Controllers
             ShoppingCart.GetCart(this.HttpContext).EmptyCart(_context);
             return View(order);
         }
-
+        public async Task<IActionResult> WaitShip(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var order = await _context.Orders
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.OrderID == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = (order.Status == Status.Shipped)? Status.Ordered : Status.Shipped;
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
         // GET: Orders/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
@@ -115,7 +132,7 @@ namespace MaoriSouvenirShopping.Controllers
                 return NotFound();
             }
             var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID)
-                .Include(detail => detail.Souvenir).ToList();
+                .Include(detail => detail.Souvenir).ThenInclude(souvenir => souvenir.Category).ToList();
             order.OrderDetails = details;
             if (saveChangesError.GetValueOrDefault())
             {
