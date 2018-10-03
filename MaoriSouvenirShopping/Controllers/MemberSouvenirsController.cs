@@ -35,11 +35,27 @@ namespace MaoriSouvenirShopping.Controllers
              decimal? currentLowerPrice,
              decimal? currentUpperPrice,
              string searchString,
+             string error,
+             string rv,
              string category,
              decimal? lower_price,
              decimal? upper_price,
              int? page)
         {
+            if (error != null)
+            {
+                if (error.Equals("deleted"))
+                {
+                    ModelState.AddModelError("cannotAddtoCart",
+                    "Unable to add to cart. The souvenir was deleted by administrator.");
+                }
+                else if(error.Equals("updated"))
+                {
+                    ModelState.AddModelError("cannotAddtoCart", "The souvenir you attempted to add to cart "
+                       + "was modified by administrator after you got the original value. The "
+                       + "order operation was canceled and please check it again.");
+                }
+            }
             ViewData["CurrentSort"] = sortOrder;
             ViewData["lowerPrice"] = lower_price;
             ViewData["upperPrice"] = upper_price;

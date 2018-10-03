@@ -70,30 +70,30 @@
                 {
                     var imgUrl = @Href("~" + item.PhotoPath);
                     var errImg = @Href("~/images/Error.svg");
-                    <tr>
-                        <td>
-                            <img style="width: 250px; height: auto;" src="@imgUrl" alt="Souvenir Image" onerror="this.onerror = null; this.src = '@errImg'">
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SouvenirName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a>|
-                            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-for="RowVersion">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
-                                Add To Cart
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <img style="width: 250px; height: auto;" src="@imgUrl" alt="Souvenir Image" onerror="this.onerror = null; this.src = '@errImg'">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SouvenirName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a>|
+                        <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-route-rv=@item.RV>
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            Add To Cart
+                        </a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

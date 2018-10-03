@@ -44,7 +44,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@Model.SouvenirID" asp-for="RowVersion">
+    <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@Model.SouvenirID" asp-route-rv=@Model.RV>
         <span class="glyphicon glyphicon-shopping-cart"></span>
         Add To Cart
     </a>|

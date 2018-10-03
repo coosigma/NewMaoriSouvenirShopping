@@ -8,6 +8,7 @@ using MaoriSouvenirShopping.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace MaoriSouvenirShopping.Controllers
 {
     [AllowAnonymous]
@@ -31,8 +32,9 @@ namespace MaoriSouvenirShopping.Controllers
         //
         // GET: /Store/AddToCart/5
         //public ActionResult AddToCart(int id)
-        public async Task<IActionResult> AddToCart(int? id, byte[] rowVersion)
+        public async Task<IActionResult> AddToCart(int? id, string RV)
         {
+            byte[] rowVersion = Convert.FromBase64String(RV);
             // Retrieve the album from the database
             var addedSouvenir = await _context.Souvenirs
                 .SingleOrDefaultAsync(souvenir => souvenir.SouvenirID == id);
@@ -40,11 +42,13 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 Souvenir deletedSouvenir = new Souvenir();
                 await TryUpdateModelAsync(deletedSouvenir);
-                ModelState.AddModelError("cannotAddtoCart",
-                    "Unable to add to cart. The souvenir was deleted by administrator.");
-                ViewData["ConcurrencyErrorMessage"] = "Unable to add to cart. The souvenir was deleted by administrator.";
-                return RedirectToAction("Index", "MemberSouvenirs");
+                return RedirectToAction("Index", "MemberSouvenirs", new { error = "deleted" });
             }
+            if (rowVersion != addedSouvenir.RowVersion)
+            {
+                return RedirectToAction("Index", "MemberSouvenirs", new { error = "updated", rv = addedSouvenir.RowVersion });
+            }
+
             _context.Entry(addedSouvenir).Property("RowVersion").OriginalValue = rowVersion;
             if (await TryUpdateModelAsync<Souvenir>(
                 addedSouvenir, "",
@@ -67,21 +71,14 @@ namespace MaoriSouvenirShopping.Controllers
                     var databaseEntry = exceptionEntry.GetDatabaseValues();
                     if (databaseEntry == null)
                     {
-                        ModelState.AddModelError("cannotAddtoCart",
-                            "Unable to add to cart. The souvenir was deleted by administrator.");
-                        ViewData["ConcurrencyErrorMessage"] = "Unable to add to cart. The souvenir was deleted by administrator.";
+                        return RedirectToAction("Index", "MemberSouvenirs", new { error = "deleted" });
                     }
                     else
                     {
                         var databaseValues = (Souvenir)databaseEntry.ToObject();
-                        ModelState.AddModelError("cannotAddtoCart", "The souvenir you attempted to add to cart "
-                       + "was modified by administrator after you got the original value. The "
-                       + "order operation was canceled and please check it again.");
-                        ViewData["ConcurrencyErrorMessage"] = "The souvenir you attempted to add to cart "
-                       + "was modified by administrator after you got the original value. The "
-                       + "order operation was canceled and please check it again.";
                         addedSouvenir.RowVersion = (byte[])databaseValues.RowVersion;
                         ModelState.Remove("RowVersion");
+                        return RedirectToAction("Index", "MemberSouvenirs", new { error = "updated", rv = databaseValues.RowVersion });
                     }
                 }
             }
