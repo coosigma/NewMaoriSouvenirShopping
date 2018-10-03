@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace MaoriSouvenirShopping.Models
 {
@@ -13,9 +14,10 @@ namespace MaoriSouvenirShopping.Models
         public string Description { get; set; }
         public int CategoryID { get; set; }
         public int SupplierID { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
 
         public Category Category { get; set; }
         public Supplier Supplier { get; set; }
-        //public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

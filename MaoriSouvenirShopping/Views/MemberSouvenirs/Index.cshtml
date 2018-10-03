@@ -4,6 +4,7 @@
 }
 
 <h2>Index</h2>
+<p class="text-danger">@Html.ValidationMessage("cannotAddtoCart")</p>
 <div class="container-fluid">
     <div class="col-md-3" style="position:relative;top:0px">
         <ul class="nav navbar-left">
@@ -87,7 +88,7 @@
                         </td>
                         <td>
                             <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a>|
-                            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID">
+                            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-for="RowVersion">
                                 <span class="glyphicon glyphicon-shopping-cart"></span>
                                 Add To Cart
                             </a>

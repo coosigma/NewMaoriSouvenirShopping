@@ -12,6 +12,8 @@
     <Compile Remove="Migrations\20180929114142_debug.Designer.cs" />
     <Compile Remove="Migrations\20180929114424_debug.cs" />
     <Compile Remove="Migrations\20180929114424_debug.Designer.cs" />
+    <Compile Remove="Migrations\20181002221817_RowVersion1.cs" />
+    <Compile Remove="Migrations\20181002221817_RowVersion1.Designer.cs" />
     <Compile Remove="Models\OrderItem.cs" />
   </ItemGroup>
 
@@ -48,7 +50,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

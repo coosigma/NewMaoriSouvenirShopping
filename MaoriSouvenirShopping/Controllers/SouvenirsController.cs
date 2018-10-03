@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Data.SqlClient;
 
 namespace MaoriSouvenirShopping.Controllers
 {
@@ -126,8 +126,6 @@ namespace MaoriSouvenirShopping.Controllers
             var souvenir = await _context.Souvenirs
                 .Include(s => s.Category)
                 .Include(s => s.Supplier)
-                //.Include(s => s.OrderItem)
-                    //.ThenInclude(e => e.Order)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.SouvenirID == id);
             if (souvenir == null)
@@ -208,7 +206,8 @@ namespace MaoriSouvenirShopping.Controllers
                 return NotFound();
             }
 
-            var souvenir = await _context.Souvenirs.SingleOrDefaultAsync(m => m.SouvenirID == id);
+            var souvenir = await _context.Souvenirs
+                .SingleOrDefaultAsync(m => m.SouvenirID == id);
             if (souvenir == null)
             {
                 return NotFound();
@@ -223,13 +222,26 @@ namespace MaoriSouvenirShopping.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id, IList<IFormFile> _files)
+        public async Task<IActionResult> EditPost(int? id, byte[] rowVersion, IList<IFormFile> _files)
         {
             if (id == null)
             {
                 return NotFound();
             }
             var souvenirToUpdate = await _context.Souvenirs.SingleOrDefaultAsync(s => s.SouvenirID == id);
+
+            if (souvenirToUpdate == null)
+            {
+                Souvenir deletedSouvenir = new Souvenir();
+                await TryUpdateModelAsync(deletedSouvenir);
+                ModelState.AddModelError(string.Empty,
+                    "Unable to save changes. The Souvenir was deleted by another Administrator.");
+                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", deletedSouvenir.CategoryID);
+                ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", deletedSouvenir.SupplierID);
+                return View(deletedSouvenir);
+            }
+
+            _context.Entry(souvenirToUpdate).Property("RowVersion").OriginalValue = rowVersion;
             var relativeName = "";
             var fileName = "";
 
@@ -254,9 +266,9 @@ namespace MaoriSouvenirShopping.Controllers
                         fs.Flush();
                     }
                 }
-            }
-            
+            }            
             souvenirToUpdate.PhotoPath = relativeName;
+
             if (await TryUpdateModelAsync<Souvenir>(
                 souvenirToUpdate,
                 "",
@@ -265,25 +277,76 @@ namespace MaoriSouvenirShopping.Controllers
                 s => s.SupplierID))
             {
                 try
-                {                                       
+                {
                     await _context.SaveChangesAsync();
-                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenirToUpdate.CategoryID);
-                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenirToUpdate.SupplierID);
+                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenirToUpdate.CategoryID);
+                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenirToUpdate.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException /* ex */)
+                //catch (DbUpdateException /* ex */)
+                //{
+                //    //Log the error (uncomment ex variable name and write a log.)
+                //    ModelState.AddModelError("", "Unable to save changes. " +
+                //        "Try again, and if the problem persists, " +
+                //        "see your system administrator.");
+                //}
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Souvenir)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+                    if (databaseEntry == null)
+                    {
+                        ModelState.AddModelError(string.Empty,
+                            "Unable to save changes. The souvenir was deleted by another administrator.");
+                    }
+                    else
+                    {
+                        var databaseValues = (Souvenir)databaseEntry.ToObject();
+
+                        if (databaseValues.SouvenirName != clientValues.SouvenirName)
+                        {
+                            ModelState.AddModelError("Souvenir Name", $"Current value: {databaseValues.SouvenirName}");
+                        }
+                        if (databaseValues.Price != clientValues.Price)
+                        {
+                            ModelState.AddModelError("Price", $"Current value: {databaseValues.Price:c}");
+                        }
+                        if (databaseValues.PhotoPath != clientValues.PhotoPath)
+                        {
+                            ModelState.AddModelError("Photo", $"Current value: {databaseValues.PhotoPath}");
+                        }
+                        if (databaseValues.Description != clientValues.Description)
+                        {
+                            ModelState.AddModelError("Description", $"Current value: {databaseValues.Description}");
+                        }
+                        if (databaseValues.CategoryID != clientValues.CategoryID)
+                        {
+                            Category databaseCategory = await _context.Categories.SingleOrDefaultAsync(c => c.CategoryID == databaseValues.CategoryID);
+                            ModelState.AddModelError("Category", $"Current value: {databaseCategory?.CategoryName}");
+                        }
+                        if (databaseValues.SupplierID != clientValues.SupplierID)
+                        {
+                            Supplier databaseSupplier = await _context.Suppliers.SingleOrDefaultAsync(s => s.SupplierID == databaseValues.SupplierID);
+                            ModelState.AddModelError("Supplier", $"Current value: {databaseSupplier?.FullName}");
+                        }
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                                + "was modified by another administrator after you got the original value. The "
+                                + "edit operation was canceled and the current values in the database "
+                                + "have been displayed. If you still want to edit this record, click "
+                                + "the Save button again. Otherwise click the Back to List hyperlink.");
+                        souvenirToUpdate.RowVersion = (byte[])databaseValues.RowVersion;
+                        ModelState.Remove("RowVersion");
+                    }
                 }
             }
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenirToUpdate.CategoryID);
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenirToUpdate.SupplierID);
             return View(souvenirToUpdate);
         }
 
         // GET: Souvenirs/Delete/5
-        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+        public async Task<IActionResult> Delete(int? id, bool? concurrencyError, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -295,8 +358,13 @@ namespace MaoriSouvenirShopping.Controllers
                 .Include(s => s.Supplier)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.SouvenirID == id);
+
             if (souvenir == null)
             {
+                if (concurrencyError.GetValueOrDefault())
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 return NotFound();
             }
             if (saveChangesError.GetValueOrDefault())
@@ -305,39 +373,41 @@ namespace MaoriSouvenirShopping.Controllers
                     "Delete failed. Try again, and if the problem persists " +
                     "see your system administrator.";
             }
+            if (concurrencyError.GetValueOrDefault())
+            {
+                ViewData["ConcurrencyErrorMessage"] = "The record you attempted to delete "
+                    + "was modified by another administrator after you got the original values. "
+                    + "The delete operation was canceled and the current values in the "
+                    + "database have been displayed. If you still want to delete this "
+                    + "record, click the Delete button again. Otherwise "
+                    + "click the Back to List hyperlink.";
+            }
             return View(souvenir);
         }
 
         // POST: Souvenirs/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(Souvenir souvenir)
         {
-            var souvenir = await _context.Souvenirs
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.SouvenirID == id);
-            if (souvenir == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
             try
             {
-                _context.Souvenirs.Remove(souvenir);
-                try
+                if (await _context.Souvenirs.AnyAsync(m => m.SouvenirID == souvenir.SouvenirID))
                 {
+                    _context.Souvenirs.Remove(souvenir);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateException s)
-                {
-                    TempData["SouvenirUsed"] = "The Souvenir being deleted has been used in previous orders.Delete those orders before trying again.";
-                    return RedirectToAction("Delete");
                 }
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException /* ex */)
+            catch (DbUpdateConcurrencyException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+                return RedirectToAction(nameof(Delete), new { concurrencyError = true, id = souvenir.SouvenirID });
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["UserUsed"] = "The Souvenir being deleted has been ordered in previous orders.Delete those orders before trying again.";
+                return RedirectToAction("Delete");
             }
         }
 
