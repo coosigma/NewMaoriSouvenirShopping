@@ -12,7 +12,10 @@
                 Category
             </li>
             <li><hr /></li>
-            <li class="active">
+            <li>
+                @Html.ActionLink("Maroi Gifts", "Index", new { category = "MaoriGift" })
+            </li>
+            <li>
                 @Html.ActionLink("Jewels", "Index", new { category = "Jewel" })
             </li>
             <li>
@@ -24,7 +27,7 @@
             <li>
                 @Html.ActionLink("Foods", "Index", new { category = "Food" })
             </li>
-            <li>
+            <li class="active">
                 @Html.ActionLink("All Categories", "Index", new { category = "AllCategories" })
             </li>
         </ul>
@@ -88,7 +91,7 @@
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a>|
-                        <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-route-rv=@item.RV>
+                        <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-route-RV="@Convert.ToBase64String(item.RowVersion)">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                             Add To Cart
                         </a>

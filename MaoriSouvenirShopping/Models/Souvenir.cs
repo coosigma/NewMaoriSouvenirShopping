@@ -16,9 +16,9 @@ namespace MaoriSouvenirShopping.Models
         public int SupplierID { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
-        public string RV => Convert.ToBase64String(RowVersion);
 
         public Category Category { get; set; }
         public Supplier Supplier { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }

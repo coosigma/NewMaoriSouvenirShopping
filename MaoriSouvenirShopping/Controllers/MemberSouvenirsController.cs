@@ -53,7 +53,7 @@ namespace MaoriSouvenirShopping.Controllers
                 {
                     ModelState.AddModelError("cannotAddtoCart", "The souvenir you attempted to add to cart "
                        + "was modified by administrator after you got the original value. The "
-                       + "order operation was canceled and please check it again.");
+                       + "order operation(includes items in your cart) was canceled and please check it again.");
                 }
             }
             ViewData["CurrentSort"] = sortOrder;

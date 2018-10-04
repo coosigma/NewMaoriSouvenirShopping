@@ -14,8 +14,11 @@
                     Category
                 </li>
                 <li><hr /></li>
-                <li class="active">
-                    @Html.ActionLink("Jewels", "Index", new { category = "Jewel"})
+                <li>
+                    @Html.ActionLink("Maroi Gifts", "Index", new { category = "MaoriGift" })
+                </li>
+                <li>
+                    @Html.ActionLink("Jewels", "Index", new { category = "Jewel" })
                 </li>
                 <li>
                     @Html.ActionLink("Crafts", "Index", new { category = "Craft" })
@@ -26,7 +29,7 @@
                 <li>
                     @Html.ActionLink("Foods", "Index", new { category = "Food" })
                 </li>
-                <li>
+                <li class="active">
                     @Html.ActionLink("All Categories", "Index", new { category = "AllCategories" })
                 </li>
             </ul>

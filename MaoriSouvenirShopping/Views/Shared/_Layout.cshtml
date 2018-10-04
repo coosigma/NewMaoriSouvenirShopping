@@ -1,13 +1,37 @@
 ﻿<!DOCTYPE html>
+@{
+    var controllerName = string.Empty;
+    object controllerObj;
+    var actionName = string.Empty;
+    object actionObj;
+
+    if (ViewContext.RouteData.Values.TryGetValue("controller", out controllerObj))
+    {
+        controllerName = controllerObj.ToString();
+    }
+
+    if (ViewContext.RouteData.Values.TryGetValue("action", out actionObj))
+    {
+        actionName = actionObj.ToString();
+    }
+    string thisPage = (controllerName.Equals("Home")) ? actionName : controllerName;
+    if (thisPage.Equals("MemberSouvenirs"))
+    {
+        thisPage = "Souvenirs";
+    }
+}
+
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Maori Souvenir Shopping</title>
-
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/reset.css"> <!-- CSS reset -->
+        <link rel="stylesheet" href="~/css/style.css"> <!-- Gem style -->
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,6 +41,7 @@
     </environment>
 </head>
 <body>
+    <div id="cd-cart-trigger"><a class="cd-img-replace" href="/#0">Cart</a></div>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -47,13 +72,55 @@
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Contact</a></li>
+
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
     </nav>
     <br />
+    <br />
+    <br />
+    <div id="cd-shadow-layer"></div>
+    <div id="cd-cart">
+        <h2>Cart</h2>
+        <ul class="cd-cart-items">
+            <li>
+                <span class="cd-qty">1x</span> Product Name
+                <div class="cd-price">$9.99</div>
+                <a href="#" class="cd-item-remove cd-img-replace">Remove</a>
+            </li>
+
+            <li>
+                <span class="cd-qty">2x</span> Product Name
+                <div class="cd-price">$19.98</div>
+                <a href="#" class="cd-item-remove cd-img-replace">Remove</a>
+            </li>
+
+            <li>
+                <span class="cd-qty">1x</span> Product Name
+                <div class="cd-price">$9.99</div>
+                <a href="#" class="cd-item-remove cd-img-replace">Remove</a>
+            </li>
+        </ul> <!-- cd-cart-items -->
+
+        <div class="cd-cart-total">
+            <p>Total <span>$39.96</span></p>
+        </div> <!-- cd-cart-total -->
+
+        <a href="#" class="checkout-btn">Checkout</a>
+
+        <p class="cd-go-to-cart"><a href="#">Go to cart page</a></p>
+    </div> <!-- cd-cart -->
     <div class="container body-content">
+        @if (!thisPage.Equals("Index"))
+        {
+            <div>
+                <p style="margin:1% 7%;"><a asp-controller="Home" asp-action="Index"> Home</a> > @thisPage</p>
+            </div>
+        }
+
+
         @RenderBody()
         <hr />
         <div>
@@ -93,17 +160,18 @@
                             <li><span class="glyphicon glyphicon glyphicon-globe"></span> 183 Bld, 139 Carrington Rd, Mt Albert, Auckland, NZ</li>
                             <li><span class="glyphicon glyphicon-phone-alt"></span> 0221234567</li>
                             <li><span class="glyphicon glyphicon-envelope"></span> support@maorisouvenir.com</li>
-                            <li><img id="icon" src="~/images/HomeIcon-Black.png" /> &copy; All rights reserved by Bing Liang</li>
+                            <li>&copy; All rights reserved by Bing Liang <img id="icon" src="~/images/HomeIcon-Black.png" /></li>
                         </ul>
                     </div>
                 </div>
-            </div>     
+            </div>
         </footer>
     </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/main.js"></script> <!-- Gem jQuery -->
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">

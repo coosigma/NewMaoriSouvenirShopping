@@ -11,68 +11,58 @@ namespace MaoriSouvenirShopping.Data
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
-            // Look for any Customer.
-            //if (context.OrderItems.Any())
-            //{
-            //    return;   // DB has been seeded
-            //}
-            //var customers = new Customer[]
-            //{
-            //     new Customer{LastName="John", FirstName="Tom", PhoneNumber="0211231234", Email="TJohn@gmail.com", Address="139 Carrington RD, Auckland"},
-            //};
-            //foreach (Customer c in customers)
-            //{
-            //    context.Customers.Add(c);
-            //}
-            //context.SaveChanges();
-            //var categories = new Category[]
-            //{
-            //     new Category{CategoryName="Jewel", Description="Treasure"},
-            //};
-            //foreach (Category c in categories)
-            //{
-            //    context.Categories.Add(c);
-            //}
-            //context.SaveChanges();
-            //var suppliers = new Supplier[]
-            //{
-            //    new Supplier{LastName="Ben", FirstName="Jerry", PhoneNumber="0227777777", Email="BJerry@gmail.com", Address="125 Carrington RD, Auckland"},
-            //};
-            //foreach (Supplier s in suppliers)
-            //{
-            //    context.Suppliers.Add(s);
-            //}
-            //context.SaveChanges();
-            //var souvenires = new Souvenir[]
-            //{
-            //     new Souvenir{SouvenirName="Jade Nicklace",
-            //         Price =1000.00, PhotoPath="foo", Description="Beautiful",
-            //         CategoryID =1, SupplierID=1},
-            //};
-            //foreach (Souvenir s in souvenires)
-            //{
-            //    context.Souvenirs.Add(s);
-            //}
-            //context.SaveChanges();
-            //var orders = new Order[]
-            //{
-            //     new Order{OrderDate=DateTime.Parse("2018-09-01"),
-            //         Status=Status.Ordered, CustomerID=3, TotalCost=1000.00},
-            //};
-            //foreach (Order o in orders)
-            //{
-            //    context.Orders.Add(o);
-            //}
-            //context.SaveChanges();
-            //var orderItems = new OrderItem[]
-            //{
-            //     new OrderItem{OrderID=5, SouvenirID=9, ItemAmount=1}
-            // };
-            //foreach (OrderItem o in orderItems)
-            //{
-            //    context.OrderItems.Add(o);
-            //}
-            //context.SaveChanges();
+            if (!context.Categories.Any())
+            {
+                var categories = new Category[]
+                {
+                    new Category{CategoryName="MaoriGifts", Description="Maori Gifts"},
+                    new Category{CategoryName="Jewels", Description="Jewels"},
+                    new Category{CategoryName="Crafts", Description="Crafts"},
+                    new Category{CategoryName="Arts", Description="Arts"},
+                    new Category{CategoryName="Foods", Description="Foods"}
+                };
+                foreach (Category c in categories)
+                {
+                    context.Categories.Add(c);
+                }
+                context.SaveChanges();
+            }
+            if (!context.Suppliers.Any())
+            {
+                var suppliers = new Supplier[]
+                {
+                    new Supplier{FirstName="Amada", LastName="Kia", Description="Maori Gifts Sup.", PhoneNumber="0211234567", Email="ak@email.com", Address="131 ABC"},
+                    new Supplier{FirstName="John", LastName="Rich", Description="Jewels Sup.", PhoneNumber="0211234566", Email="jr@email.com", Address="132 ABC"},
+                    new Supplier{FirstName="Mary", LastName="Well", Description="Crafts Sup.", PhoneNumber="0211234565", Email="mw@email.com", Address="133 ABC"},
+                    new Supplier{FirstName="Tom", LastName="Smart", Description="Arts Sup.", PhoneNumber="0211234564", Email="ts@email.com", Address="134 ABC"},
+                    new Supplier{FirstName="Jack", LastName="Big", Description="Foods Sup.", PhoneNumber="0211234563", Email="jb@email.com", Address="135 ABC"},
+                };
+                foreach (Supplier s in suppliers)
+                {
+                    context.Suppliers.Add(s);
+                }
+                context.SaveChanges();
+            }
+            if (!context.Souvenirs.Any())
+            {
+                var souvenirs = new Souvenir[]
+                {
+                    new Souvenir{SouvenirName="SurvivalKit", Price=(decimal)24.95, Description="Survival Kit", CategoryID=9, SupplierID=4, PhotoPath=""},
+                    new Souvenir{SouvenirName="DollsKit", Price=(decimal)35.45, Description="Dolls kit", CategoryID=9, SupplierID=4, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade1", Price=(decimal)100, Description="J1", CategoryID=10, SupplierID=5, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade2", Price=(decimal)200, Description="J2", CategoryID=10, SupplierID=5, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade3", Price=(decimal)300, Description="J3", CategoryID=10, SupplierID=5, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade4", Price=(decimal)400, Description="J4", CategoryID=10, SupplierID=5, PhotoPath=""},
+                    new Souvenir{SouvenirName="BoatCraft", Price=(decimal)100, Description="Boat Craft", CategoryID=11, SupplierID=6, PhotoPath=""},
+                    new Souvenir{SouvenirName="Postcard", Price=(decimal)1, Description="Postcard", CategoryID=12, SupplierID=7, PhotoPath=""},
+                    new Souvenir{SouvenirName="Kai", Price=(decimal)30, Description="Sea food", CategoryID=13, SupplierID=8, PhotoPath=""},
+                };
+                foreach (Souvenir s in souvenirs)
+                {
+                    context.Souvenirs.Add(s);
+                }
+                context.SaveChanges();
+            }
 
         }
     }

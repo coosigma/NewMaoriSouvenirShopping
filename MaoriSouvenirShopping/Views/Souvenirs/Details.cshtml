@@ -9,52 +9,52 @@
 <div>
     <h4>Souvenir</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <div>
         @{
             var imgUrl = @Href("~" + Model.PhotoPath);
             var errImg = @Href("~/images/Error.svg");
         }
-        <dt>
-            <img style="width: auto; height: auto;" src="@imgUrl" alt="Souvenir Image" onerror="this.onerror = null; this.src = '@errImg'">
-        </dt>
-        <dt>
-            @Html.DisplayNameFor(model => model.SouvenirName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SouvenirName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PhotoPath)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PhotoPath)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Supplier.FullName)
-        </dd>
-    </dl>
-</div>
+        <img style="width: auto; height: auto;" src="@imgUrl" alt="Souvenir Image" onerror="this.onerror = null; this.src = '@errImg'">
+        </div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.SouvenirName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SouvenirName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PhotoPath)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhotoPath)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Supplier.FullName)
+            </dd>
+        </dl>
+    </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.SouvenirID">Edit</a> |
     <a asp-action="Index">Back to List</a>

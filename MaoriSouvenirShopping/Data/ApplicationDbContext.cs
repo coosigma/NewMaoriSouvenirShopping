@@ -33,6 +33,7 @@ namespace MaoriSouvenirShopping.Data
             builder.Entity<Category>().ToTable("Category");
             builder.Entity<Supplier>().ToTable("Supplier");
             builder.Entity<CartItem>().ToTable("CartItem");
+            builder.Entity<CartItem>().HasOne(c => c.Souvenir).WithMany(s => s.CartItems).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Order>().ToTable("Order");
             builder.Entity<OrderDetail>().ToTable("OrderDetail");
             builder.Entity<OrderDetail>().HasOne(p => p.Order).WithMany(o => o.OrderDetails).OnDelete(DeleteBehavior.Cascade);

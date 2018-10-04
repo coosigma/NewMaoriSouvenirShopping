@@ -1,6 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    ViewData["UserSouvenirPage"] = "Souvenirs";
 }
+@if (!User.IsInRole("Admin"))
+{
+    ViewData["UserSouvenirPage"] = "MemberSouvenirs";
+}
+
 <img id="icon" src="~/images/memoraial_souvenir.gif" />
 <div class="col-md-12">
     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -11,14 +17,13 @@
             <li data-target="#myCarousel" data-slide-to="3"></li>
         </ol>
         <div class="carousel-inner" role="listbox">
-            <div class="item active">
+            <div class="active item">
                 <img src="~/images/Boat.jpg" alt="Woodcarving boat" class="img-responsive" />
                 <div class="carousel-caption" role="option">
                     <p style="color:black;position:relative;left:350px;top:20px">
                         Woodcarving boat<br />
-                        <a class="btn btn-default" href="#" style="position:relative;left:50px;top:20px">
-                            Buy Now
-                        </a>
+                        @*<a class="btn btn-default" style="position:relative;left:50px;top:20px" asp-controller="Souvenirs" asp-action="Details" asp-route-id="23">Buy Now</a>*@
+                        <a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="23" class="btn btn-default">Buy Now</a>
                     </p>
                 </div>
             </div>
@@ -27,9 +32,7 @@
                 <div class="carousel-caption" role="option">
                     <p style="color:black;position:relative;left:300px">
                         Doll Set<br />
-                        <a class="btn btn-default" style="position:relative;left:20px;top:20px" href="#">
-                            Buy Now
-                        </a>
+                        <a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="26" class="btn btn-default">Buy Now</a>
                     </p>
                 </div>
             </div>
@@ -38,9 +41,7 @@
                 <div class="carousel-caption" role="option">
                     <p style="color:black;position:relative;left:200px;top: -30px">
                         Jade Necklace<br />
-                        <a class="btn btn-default" style="position:relative;left:40px;top:20px" href="#">
-                            Buy Now
-                        </a>
+                        <a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="27" class="btn btn-default">Buy Now</a>
                     </p>
                 </div>
             </div>
@@ -49,9 +50,7 @@
                 <div class="carousel-caption" role="option">
                     <p style="color:black;position:relative;left:130px">
                         Postcard
-                        <a class="btn btn-default" style="position:relative;left:20px" href="#">
-                            Buy Now
-                        </a>
+                        <a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="24" class="btn btn-default">Buy Now</a>
                     </p>
                 </div>
             </div>
@@ -70,19 +69,19 @@
 <div class="row-fluid">
     <div class="col-md-3">
         <img src="~/images/Jade1.jpg" /><br />
-        Jade 1<br />$100<br /><a href="#">view</a>
+        Jade 1<br />$100<br /><a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="19">view</a>
     </div>
     <div class="col-md-3">
         <img src="~/images/Jade2.jpg" /><br />
-        Jade 2<br />$200<br /><a href="#">view</a>
+        Jade 2<br />$200<br /><a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="20">view</a>
     </div>
     <div class="col-md-3">
         <img src="~/images/Jade3.jpg" /><br />
-        Jade 3<br />$300<br /><a href="#">view</a>
+        Jade 3<br />$300<br /><a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="21">view</a>
     </div>
     <div class="col-md-3">
         <img src="~/images/Jade4.jpg" /><br />
-        Jade 4<br />$400<br /><a href="#">view</a>
+        Jade 4<br />$400<br /><a asp-controller="@ViewData["UserSouvenirPage"]" asp-action="Details" asp-route-id="22">view</a>
     </div>
 </div>
 <br />

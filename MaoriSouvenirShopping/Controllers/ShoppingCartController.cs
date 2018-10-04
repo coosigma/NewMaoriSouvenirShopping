@@ -44,8 +44,9 @@ namespace MaoriSouvenirShopping.Controllers
                 await TryUpdateModelAsync(deletedSouvenir);
                 return RedirectToAction("Index", "MemberSouvenirs", new { error = "deleted" });
             }
-            if (rowVersion != addedSouvenir.RowVersion)
+            if (BitConverter.ToString(rowVersion) != BitConverter.ToString(addedSouvenir.RowVersion))
             {
+                this.EmptyCart();
                 return RedirectToAction("Index", "MemberSouvenirs", new { error = "updated", rv = addedSouvenir.RowVersion });
             }
 
