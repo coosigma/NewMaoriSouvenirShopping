@@ -91,9 +91,8 @@
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a>|
-                        <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-route-RV="@Convert.ToBase64String(item.RowVersion)">
-                            <span class="glyphicon glyphicon-shopping-cart"></span>
-                            Add To Cart
+                        <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-id="@item.SouvenirID" asp-route-RV="@Convert.ToBase64String(item.RowVersion)">                   
+                            Add To <span class="glyphicon glyphicon-shopping-cart"></span>
                         </a>
                     </td>
                 </tr>
