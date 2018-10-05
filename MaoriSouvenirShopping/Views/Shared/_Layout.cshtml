@@ -40,7 +40,6 @@
     </environment>
 </head>
 <body>
-    <div id="cd-cart-trigger"><a class="cd-img-replace" href="/#0">Cart</a></div>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -80,7 +79,6 @@
     <br />
     <br />
     <br />
-    <div id="cd-shadow-layer"></div>
     <div class="container body-content">
         @if (!thisPage.Equals("Index"))
         {
@@ -96,11 +94,12 @@
             @*@if (!User.IsInRole("Admin") && !((ViewData["NoCart"] != null && ViewData["NoCart"].Equals("true"))))*@
             @if (!User.IsInRole("Admin"))
             {
+                <div id="cd-cart-trigger"><a class="cd-img-replace" href="/#0">Cart</a></div>
+                <div id="cd-shadow-layer"></div>
                 @await Component.InvokeAsync("ShoppingCartViewModel")
             }
         </div>
         <footer class="bg-light" style="margin:20px -15px -15px -15px;">
-            <hr />
             <div class="container">
                 <div class="row text-muted">
                     <div class="col-md-3">

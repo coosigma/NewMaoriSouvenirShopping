@@ -61,9 +61,9 @@
         }
     </div>
     <br />
-    @*@if (@Model.CartItems.Count > 0)
-        {*@
-    <div class="row">
+    @if (@Model.CartItems.Count > 0)
+        {
+    <div class="row" id="cart_buttons">
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
             <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/EmptyCart" class="empty-cart-btn">
@@ -77,6 +77,6 @@
         </div>
     </div>
 
-    @*}*@
+    }
 
 </div>

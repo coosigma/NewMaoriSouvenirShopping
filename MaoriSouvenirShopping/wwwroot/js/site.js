@@ -22,4 +22,7 @@ function onUpdateCartComplete(ajax) {
     $("#sub_total").html("$" + res.sub.toFixed(2));
     $("#gst_total").html("$" + res.gst.toFixed(2));
     $("#total_price").html("$" + res.total.toFixed(2));
+    if (items.length == 0) {
+        $("#cart_buttons").hide();
+    }
 }
