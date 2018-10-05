@@ -6,6 +6,7 @@
 
 
 <div id="cd-cart" class="container">
+
     <h2><span class="glyphicon glyphicon glyphicon-shopping-cart"></span> My Cart</h2>
     <hr />
     <div class="row">
@@ -22,31 +23,29 @@
             <h4 class="display-4">Price</h4>
         </div>
     </div>
-
-    @foreach (var item in Model.CartItems)
-    {
-        <hr />
-        <div class="row">
-            <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirID</a> </div>
-
-            <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirName</a> </div>
-
-            <div class="col-sm-3">@item.Count <a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-route-id="@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
-
-            <div class="col-sm-3">$@item.Souvenir.Price</div>
-        </div>
-    }
+    <div class="row" id="cart_items">
+        @foreach (var item in Model.CartItems)
+        {
+            <hr />
+            <div class="row">
+                <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirID</a> </div>
+                <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirName</a> </div>
+                <div class="col-sm-3">@item.Count <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/RemoveFromCart/@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
+                <div class="col-sm-3">$@item.Souvenir.Price</div>
+            </div>
+        }
+    </div>
     <hr />
     <div class="row">
         <div class="col-sm-6"></div>
         <div class="col-sm-3">Sub Total:</div>
-        <div class="col-sm-3">$@Model.SubTotal</div>
+        <div class="col-sm-3" id="sub_total">$@Model.SubTotal</div>
     </div>
     <hr />
     <div class="row">
         <div class="col-sm-6"></div>
         <div class="col-sm-3">Total GST:</div>
-        <div class="col-sm-3">$@Model.TotalGST</div>
+        <div class="col-sm-3" id="gst_total">$@Model.TotalGST</div>
     </div>
     <hr />
     <div class="row">
@@ -54,11 +53,11 @@
         <div class="col-sm-3">Grand Total:</div>
         @if (Model.CartTotal == 0)
         {
-            <div class="col-sm-3">$0.00</div>
+            <div class="col-sm-3" id="total_price">$0.00</div>
         }
         else
         {
-            <div class="col-sm-3">$@Model.CartTotal</div>
+            <div class="col-sm-3" id="total_price">$@Model.CartTotal</div>
         }
     </div>
     <br />
@@ -67,7 +66,7 @@
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
-            <a class="empty-cart-btn" asp-action="EmptyCart" asp-controller="ShoppingCart">
+            <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/EmptyCart" class="empty-cart-btn">
                 Empty Cart <span class="glyphicon glyphicon-remove"></span>
             </a>
         </div>

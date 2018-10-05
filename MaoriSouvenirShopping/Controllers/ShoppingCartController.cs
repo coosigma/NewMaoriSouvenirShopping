@@ -89,15 +89,16 @@ namespace MaoriSouvenirShopping.Controllers
         public ActionResult RemoveFromCart(int id)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            int itemCount = cart.RemoveFromCart(id, _context);
-            return Redirect(Request.Headers["Referer"].ToString());
+            Object UpdatedModel = cart.RemoveFromCart(id, _context);
+            return Json(UpdatedModel);
+            //return Redirect(Request.Headers["Referer"].ToString());
         }
 
         public ActionResult EmptyCart()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.EmptyCart(_context);
-            return Redirect(Request.Headers["Referer"].ToString());
+            Object UpdatedModel = cart.EmptyCart(_context);
+            return Json(UpdatedModel);
         }
     }
 }

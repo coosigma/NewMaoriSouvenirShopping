@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace MaoriSouvenirShopping.Models
 {
@@ -38,7 +39,31 @@ namespace MaoriSouvenirShopping.Models
             }
             db.SaveChanges();
         }
-        public int RemoveFromCart(int id, ApplicationDbContext db)
+        public Object UpdateModel(ApplicationDbContext db)
+        {
+            var CartItems = this.GetCartItems(db);
+            var CartTotal = this.GetTotal(db);
+            ArrayList Items = new ArrayList();
+            foreach (CartItem c in CartItems)
+            {
+                Items.Add(new
+                {
+                    ID = c.Souvenir.SouvenirID,
+                    Name = c.Souvenir.SouvenirName,
+                    Price = c.Souvenir.Price,
+                    Quantity = c.Count
+                });
+            }
+            var model = new
+            {
+                Total = CartTotal,
+                GST = CartTotal * (decimal)0.15,
+                Sub = CartTotal * (decimal)0.85,
+                Items = Items
+            };
+            return model;
+        }
+        public Object RemoveFromCart(int id, ApplicationDbContext db)
         {
             var cartItem = db.CartItems.SingleOrDefault(cart => cart.CartID == ShoppingCartID && cart.Souvenir.SouvenirID == id);
             int itemCount = 0;
@@ -55,9 +80,9 @@ namespace MaoriSouvenirShopping.Models
                 }
                 db.SaveChanges();
             }
-            return itemCount;
+            return UpdateModel(db);
         }
-        public void EmptyCart(ApplicationDbContext db)
+        public Object EmptyCart(ApplicationDbContext db)
         {
             var cartItems = db.CartItems.Where(cart => cart.CartID == ShoppingCartID);
             foreach (var cartItem in cartItems)
@@ -65,6 +90,7 @@ namespace MaoriSouvenirShopping.Models
                 db.CartItems.Remove(cartItem);
             }
             db.SaveChanges();
+            return UpdateModel(db);
         }
         public List<CartItem> GetCartItems(ApplicationDbContext db)
         {

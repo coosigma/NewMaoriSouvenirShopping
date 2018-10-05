@@ -81,7 +81,7 @@
     <br />
     <br />
     <div id="cd-shadow-layer"></div>
-     <div class="container body-content">
+    <div class="container body-content">
         @if (!thisPage.Equals("Index"))
         {
             <div>
@@ -98,7 +98,7 @@
             {
                 @await Component.InvokeAsync("ShoppingCartViewModel")
             }
-            </div>
+        </div>
         <footer class="bg-light" style="margin:20px -15px -15px -15px;">
             <hr />
             <div class="container">
@@ -141,6 +141,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
         <script src="~/js/main.js"></script> <!-- Gem jQuery -->
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -159,6 +160,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    @*@Scripts.Render("~/js/jquery.unobtrusive-ajax.min.js")*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

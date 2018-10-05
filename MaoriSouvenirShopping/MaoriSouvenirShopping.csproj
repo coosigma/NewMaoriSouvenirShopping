@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scripts\**" />
+    <Content Remove="Scripts\**" />
+    <EmbeddedResource Remove="Scripts\**" />
+    <None Remove="Scripts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\CustomersController.cs" />
     <Compile Remove="Data\WebShopContext.cs" />
     <Compile Remove="Migrations\20180929114142_debug.cs" />
