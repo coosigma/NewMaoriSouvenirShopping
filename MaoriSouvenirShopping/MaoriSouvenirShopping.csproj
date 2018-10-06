@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20180929114424_debug.Designer.cs" />
     <Compile Remove="Migrations\20181002221817_RowVersion1.cs" />
     <Compile Remove="Migrations\20181002221817_RowVersion1.Designer.cs" />
+    <Compile Remove="Migrations\20181006035030_user_validation.cs" />
+    <Compile Remove="Migrations\20181006035030_user_validation.Designer.cs" />
     <Compile Remove="Models\OrderItem.cs" />
   </ItemGroup>
 

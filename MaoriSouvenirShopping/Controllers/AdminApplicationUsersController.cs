@@ -53,6 +53,75 @@ namespace MaoriSouvenirShopping.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        // GET: AdminApplicationUsers/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.ApplicationUser
+                .Include(u => u.Orders)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        // GET: AdminApplicationUsers/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: AdminApplicationUsers/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var userToUpdate = await _context.ApplicationUser.SingleOrDefaultAsync(u => u.Id == id);
+            if (await TryUpdateModelAsync<ApplicationUser>(
+                 userToUpdate,
+                 "",
+                   u => u.FirstName, u => u.LastName, u => u.PhoneNumber,
+                   u => u.Email, u => u.Address))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userToUpdate);
+        }
         // GET: AdminApplicationUsers/Delete/5
         public async Task<IActionResult> Delete(string id, bool? saveChangesError = false)
         {

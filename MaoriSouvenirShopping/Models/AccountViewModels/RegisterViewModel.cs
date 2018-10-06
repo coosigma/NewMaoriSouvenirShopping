@@ -37,5 +37,9 @@ namespace MaoriSouvenirShopping.Models.AccountViewModels
         [Display(Name = "Address")]
         public string Address { get; set; }
 
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
     }
 }

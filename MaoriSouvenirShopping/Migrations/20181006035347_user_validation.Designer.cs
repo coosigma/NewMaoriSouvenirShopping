@@ -12,9 +12,10 @@ using System;
 namespace MaoriSouvenirShopping.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181006035347_user_validation")]
+    partial class user_validation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +37,6 @@ namespace MaoriSouvenirShopping.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");

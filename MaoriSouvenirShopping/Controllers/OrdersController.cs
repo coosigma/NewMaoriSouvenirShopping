@@ -30,7 +30,25 @@ namespace MaoriSouvenirShopping.Controllers
         {
             return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
         }
+        // GET: Orders/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(o => o.Souvenir)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.OrderID == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
         // GET: Orders/Create
         [Authorize(Roles = "Member")]
         public IActionResult Create()

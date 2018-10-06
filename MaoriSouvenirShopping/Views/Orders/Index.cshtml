@@ -54,8 +54,9 @@
                 else
                 {
                     <a asp-action="WaitShip" asp-route-id="@item.OrderID">Ship</a>
-                }|
-                <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+                }
+                | <a asp-action="Details" asp-route-id="@item.OrderID">Details</a>
+                | <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
             </td>
         </tr>
 }
