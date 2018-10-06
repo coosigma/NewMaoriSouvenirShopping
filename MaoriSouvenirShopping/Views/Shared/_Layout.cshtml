@@ -64,6 +64,11 @@
                         <li><a asp-area="" asp-controller="Categories" asp-action="Index"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Categories</a></li>
                         <li><a asp-area="" asp-controller="Suppliers" asp-action="Index"><span class="glyphicon glyphicon-oil" aria-hidden="true"></span> Suppliers</a></li>
                     }
+                    else if (User.IsInRole("Member"))
+                    {
+                        <li><a asp-area="" asp-controller="MemberSouvenirs" asp-action="Index"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Souvenirs</a></li>
+                        <li><a asp-area="" asp-controller="MyOrders" asp-action="Index" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> My Orders</a></li>
+                    }
                     else
                     {
                         <li><a asp-area="" asp-controller="MemberSouvenirs" asp-action="Index"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Souvenirs</a></li>
