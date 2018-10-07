@@ -111,7 +111,7 @@ namespace MaoriSouvenirShopping.Controllers
                 }
             }
 
-            int pageSize = 10;
+            int pageSize = 5;
             return View(await PaginatedList<Souvenir>.CreateAsync(souvenirs.AsNoTracking(), page ?? 1, pageSize));
         }
 
