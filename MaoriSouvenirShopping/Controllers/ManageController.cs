@@ -62,7 +62,9 @@ namespace MaoriSouvenirShopping.Controllers
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
-                Address = user.Address
+                Address = user.Address,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
 
             return View(model);
@@ -100,6 +102,39 @@ namespace MaoriSouvenirShopping.Controllers
                 if (!setPhoneResult.Succeeded)
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                }
+            }
+
+            var Address = user.Address;
+            if (model.Address != Address)
+            {
+                user.Address = model.Address;
+                var setAddressResult = await _userManager.UpdateAsync(user);
+                if (!setAddressResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting address for user with ID '{user.Id}'.");
+                }
+            }
+
+            var FirstName = user.FirstName;
+            if (model.FirstName != FirstName)
+            {
+                user.FirstName = model.FirstName;
+                var setFirstNameResult = await _userManager.UpdateAsync(user);
+                if (!setFirstNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting First Name for user with ID '{user.Id}'.");
+                }
+            }
+
+            var LastName = user.LastName;
+            if (model.LastName != LastName)
+            {
+                user.LastName = model.LastName;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting Last Name for user with ID '{user.Id}'.");
                 }
             }
 

@@ -114,6 +114,7 @@ namespace MaoriSouvenirShopping
                 {
                     UserName = Configuration.GetSection("UserSettings")["UserEmail"],
                     Email = Configuration.GetSection("UserSettings")["UserEmail"],
+                    PhoneNumber = Configuration.GetSection("UserSettings")["UserPhoneNumber"],
                     Address = "Addmin Address",
                     EmailConfirmed = true,
                     Enabled = true
