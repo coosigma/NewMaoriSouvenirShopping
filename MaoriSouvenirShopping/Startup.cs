@@ -90,7 +90,8 @@ namespace MaoriSouvenirShopping
             {
                 //create database schema if none exists
                 var apContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-                apContext.Database.EnsureCreated();
+                //apContext.Database.EnsureCreated();
+                apContext.Database.Migrate();
 
                 //If there is already an Administrator role, abort
                 var _roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
