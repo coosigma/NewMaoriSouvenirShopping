@@ -94,7 +94,7 @@ namespace MaoriSouvenirShopping.Models
         }
         public List<CartItem> GetCartItems(ApplicationDbContext db)
         {
-            List<CartItem> cartItems = db.CartItems.Include(i => i.Souvenir).Where(cartItem => cartItem.CartID == ShoppingCartID).ToList();
+            List<CartItem> cartItems = db.CartItems.Include(i => i.Souvenir).ThenInclude(s => s.Category).Where(cartItem => cartItem.CartID == ShoppingCartID).ToList();
 
             return cartItems;
 
