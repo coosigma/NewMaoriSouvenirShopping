@@ -87,11 +87,11 @@
     <div class="container body-content">
         @if (!thisPage.Equals("Index"))
         {
+            string pagename = (thisPage.Equals("AdminApplicationUsers")) ? "Members" : thisPage;
             <div>
-                <p style="margin:1% 7%;"><a asp-controller="Home" asp-action="Index"> Home</a> > @thisPage</p>
+                <p style="margin:1% 7%;"><a asp-controller="Home" asp-action="Index"> Home</a> > @pagename</p>
             </div>
         }
-
 
         @RenderBody()
         <hr />
