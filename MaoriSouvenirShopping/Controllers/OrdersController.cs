@@ -41,6 +41,7 @@ namespace MaoriSouvenirShopping.Controllers
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
                     .ThenInclude(o => o.Souvenir)
+                        .ThenInclude(s => s.Category)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.OrderID == id);
             if (order == null)
@@ -110,7 +111,8 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
-            var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID).Include(detail => detail.Souvenir).ToList();
+            var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID)
+                .Include(detail => detail.Souvenir).ThenInclude(s => s.Category).ToList();
             order.OrderDetails = details;
             ShoppingCart.GetCart(this.HttpContext).EmptyCart(_context);
             return View(order);

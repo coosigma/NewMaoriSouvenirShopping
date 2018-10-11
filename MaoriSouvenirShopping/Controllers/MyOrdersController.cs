@@ -51,6 +51,7 @@ namespace MaoriSouvenirShopping.Controllers
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
                     .ThenInclude(o => o.Souvenir)
+                        .ThenInclude(s => s.Category)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.OrderID == id);
             if (order == null)

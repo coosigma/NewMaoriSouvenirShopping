@@ -29,12 +29,15 @@ namespace MaoriSouvenirShopping.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             builder.Entity<Souvenir>().ToTable("Souvenir");
-            //builder.Entity<ApplicationUser>().ToTable("ApplicationUser");
+            //builder.Entity<Souvenir>().HasOne(s => s.Category).WithMany(c => c.Souvenirs).OnDelete(DeleteBehavior.SetNull);
+            //builder.Entity<Souvenir>().HasOne(s => s.Supplier).WithMany(s => s.Souvenirs).OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<ApplicationUser>().ToTable("ApplicationUser");
             builder.Entity<Category>().ToTable("Category");
             builder.Entity<Supplier>().ToTable("Supplier");
             builder.Entity<CartItem>().ToTable("CartItem");
             builder.Entity<CartItem>().HasOne(c => c.Souvenir).WithMany(s => s.CartItems).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Order>().ToTable("Order");
+            //builder.Entity<Order>().HasOne(o => o.User).WithMany(u => u.Orders).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<OrderDetail>().ToTable("OrderDetail");
             builder.Entity<OrderDetail>().HasOne(p => p.Order).WithMany(o => o.OrderDetails).OnDelete(DeleteBehavior.Cascade);
         }

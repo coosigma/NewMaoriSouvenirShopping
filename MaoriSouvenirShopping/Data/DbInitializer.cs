@@ -15,11 +15,11 @@ namespace MaoriSouvenirShopping.Data
             {
                 var categories = new Category[]
                 {
-                    new Category{CategoryName="MaoriGifts", Description="Maori Gifts"},
-                    new Category{CategoryName="Jewels", Description="Jewels"},
-                    new Category{CategoryName="Crafts", Description="Crafts"},
-                    new Category{CategoryName="Arts", Description="Arts"},
-                    new Category{CategoryName="Foods", Description="Foods"}
+                    new Category{CategoryName="MaoriGift", Description="Maori Gifts"},
+                    new Category{CategoryName="Jewel", Description="Jewels"},
+                    new Category{CategoryName="Craft", Description="Crafts"},
+                    new Category{CategoryName="Art", Description="Arts"},
+                    new Category{CategoryName="Food", Description="Foods"}
                 };
                 foreach (Category c in categories)
                 {
@@ -47,15 +47,16 @@ namespace MaoriSouvenirShopping.Data
             {
                 var souvenirs = new Souvenir[]
                 {
-                    new Souvenir{SouvenirName="SurvivalKit", Price=(decimal)24.95, Description="Survival Kit", CategoryID=9, SupplierID=4, PhotoPath=""},
-                    new Souvenir{SouvenirName="DollsKit", Price=(decimal)35.45, Description="Dolls kit", CategoryID=9, SupplierID=4, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade1", Price=(decimal)100, Description="J1", CategoryID=10, SupplierID=5, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade2", Price=(decimal)200, Description="J2", CategoryID=10, SupplierID=5, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade3", Price=(decimal)300, Description="J3", CategoryID=10, SupplierID=5, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade4", Price=(decimal)400, Description="J4", CategoryID=10, SupplierID=5, PhotoPath=""},
-                    new Souvenir{SouvenirName="BoatCraft", Price=(decimal)100, Description="Boat Craft", CategoryID=11, SupplierID=6, PhotoPath=""},
-                    new Souvenir{SouvenirName="Postcard", Price=(decimal)1, Description="Postcard", CategoryID=12, SupplierID=7, PhotoPath=""},
-                    new Souvenir{SouvenirName="Kai", Price=(decimal)30, Description="Sea food", CategoryID=13, SupplierID=8, PhotoPath=""},
+                    new Souvenir{SouvenirName="SurvivalKit", Price=(decimal)24.95, Description="Survival Kit", CategoryID=1, SupplierID=1, PhotoPath=""},
+                    new Souvenir{SouvenirName="DollsKit", Price=(decimal)35.45, Description="Dolls kit", CategoryID=1, SupplierID=1, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade0", Price=(decimal)500, Description="J0", CategoryID=2, SupplierID=2, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade1", Price=(decimal)100, Description="J1", CategoryID=2, SupplierID=2, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade2", Price=(decimal)200, Description="J2", CategoryID=2, SupplierID=2, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade3", Price=(decimal)300, Description="J3", CategoryID=2, SupplierID=2, PhotoPath=""},
+                    new Souvenir{SouvenirName="Jade4", Price=(decimal)400, Description="J4", CategoryID=2, SupplierID=2, PhotoPath=""},
+                    new Souvenir{SouvenirName="BoatCraft", Price=(decimal)100, Description="Boat Craft", CategoryID=3, SupplierID=3, PhotoPath=""},
+                    new Souvenir{SouvenirName="Postcard", Price=(decimal)1, Description="Postcard", CategoryID=4, SupplierID=4, PhotoPath=""},
+                    new Souvenir{SouvenirName="Kai", Price=(decimal)30, Description="Sea food", CategoryID=5, SupplierID=5, PhotoPath=""},
                 };
                 foreach (Souvenir s in souvenirs)
                 {
