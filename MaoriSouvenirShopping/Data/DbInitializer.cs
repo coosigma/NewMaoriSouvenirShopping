@@ -47,16 +47,16 @@ namespace MaoriSouvenirShopping.Data
             {
                 var souvenirs = new Souvenir[]
                 {
-                    new Souvenir{SouvenirName="SurvivalKit", Price=(decimal)24.95, Description="Survival Kit", CategoryID=1, SupplierID=1, PhotoPath=""},
-                    new Souvenir{SouvenirName="DollsKit", Price=(decimal)35.45, Description="Dolls kit", CategoryID=1, SupplierID=1, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade0", Price=(decimal)500, Description="J0", CategoryID=2, SupplierID=2, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade1", Price=(decimal)100, Description="J1", CategoryID=2, SupplierID=2, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade2", Price=(decimal)200, Description="J2", CategoryID=2, SupplierID=2, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade3", Price=(decimal)300, Description="J3", CategoryID=2, SupplierID=2, PhotoPath=""},
-                    new Souvenir{SouvenirName="Jade4", Price=(decimal)400, Description="J4", CategoryID=2, SupplierID=2, PhotoPath=""},
-                    new Souvenir{SouvenirName="BoatCraft", Price=(decimal)100, Description="Boat Craft", CategoryID=3, SupplierID=3, PhotoPath=""},
-                    new Souvenir{SouvenirName="Postcard", Price=(decimal)1, Description="Postcard", CategoryID=4, SupplierID=4, PhotoPath=""},
-                    new Souvenir{SouvenirName="Kai", Price=(decimal)30, Description="Sea food", CategoryID=5, SupplierID=5, PhotoPath=""},
+                    new Souvenir{SouvenirName="SurvivalKit", Price=(decimal)24.95, Description="Survival Kit", CategoryID=1, SupplierID=1, PhotoPath="/images/SouvenirImages/travellers_survival_kit.jpg"},
+                    new Souvenir{SouvenirName="DollsKit", Price=(decimal)35.45, Description="Dolls kit", CategoryID=1, SupplierID=1, PhotoPath="/images/SouvenirImages/Dolls.jpeg"},
+                    new Souvenir{SouvenirName="Jade0", Price=(decimal)500, Description="J0", CategoryID=2, SupplierID=2, PhotoPath="/images/SouvenirImages/Jade.jpg"},
+                    new Souvenir{SouvenirName="Jade1", Price=(decimal)100, Description="J1", CategoryID=2, SupplierID=2, PhotoPath="/images/SouvenirImages/Jade1.jpg"},
+                    new Souvenir{SouvenirName="Jade2", Price=(decimal)200, Description="J2", CategoryID=2, SupplierID=2, PhotoPath="/images/SouvenirImages/Jade2.jpg"},
+                    new Souvenir{SouvenirName="Jade3", Price=(decimal)300, Description="J3", CategoryID=2, SupplierID=2, PhotoPath="/images/SouvenirImages/Jade3.jpg"},
+                    new Souvenir{SouvenirName="Jade4", Price=(decimal)400, Description="J4", CategoryID=2, SupplierID=2, PhotoPath="/images/SouvenirImages/Jade4.jpg"},
+                    new Souvenir{SouvenirName="BoatCraft", Price=(decimal)100, Description="Boat Craft", CategoryID=3, SupplierID=3, PhotoPath="/images/SouvenirImages/Boat.jpg"},
+                    new Souvenir{SouvenirName="Postcard", Price=(decimal)1, Description="Postcard", CategoryID=4, SupplierID=4, PhotoPath="/images/SouvenirImages/PostCard.jpg"},
+                    new Souvenir{SouvenirName="Kai", Price=(decimal)30, Description="Sea food", CategoryID=5, SupplierID=5, PhotoPath="/images/SouvenirImages/Kai.jpg"},
                 };
                 foreach (Souvenir s in souvenirs)
                 {
