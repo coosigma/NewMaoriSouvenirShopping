@@ -165,7 +165,15 @@ namespace MaoriSouvenirShopping.Controllers
             try
             {
                 _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["UserUsed"] = "The Category being deleted has souvenirs in it. Delete those souvenirs before trying again.";
+                    return RedirectToAction("Delete");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException /* ex */)

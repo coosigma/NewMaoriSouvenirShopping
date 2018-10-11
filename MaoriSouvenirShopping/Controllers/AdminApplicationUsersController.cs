@@ -168,7 +168,7 @@ namespace MaoriSouvenirShopping.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["UserUsed"] = "The Member being deleted has been used in previous orders.Delete those orders before trying again.";
+                    TempData["UserUsed"] = "The Member being deleted has been used in previous orders. Delete those orders before trying again.";
                     return RedirectToAction("Delete");
                 }
                 return RedirectToAction(nameof(Index));
