@@ -125,6 +125,8 @@
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-page="@(Model.PageIndex - 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-lower_price="@ViewData["lowerPrice"]"
+               asp-route-upper_price="@ViewData["upperPrice"]"
                class="btn btn-default @prevDisabled">
                 Previous
             </a>
@@ -132,6 +134,8 @@
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-page="@(Model.PageIndex + 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-lower_price="@ViewData["lowerPrice"]"
+               asp-route-upper_price="@ViewData["upperPrice"]"
                class="btn btn-default @nextDisabled">
                 Next
             </a>

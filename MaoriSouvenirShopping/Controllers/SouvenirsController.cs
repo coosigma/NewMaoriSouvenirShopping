@@ -145,7 +145,7 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 category = categories.Where(c => c.CategoryName == "MaoriGift").Single();
                 ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", category.CategoryID);
-            } catch (InvalidOperationException ex)
+            } catch (InvalidOperationException)
             {
                 ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", 0);
             }
@@ -413,7 +413,7 @@ namespace MaoriSouvenirShopping.Controllers
                 //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { concurrencyError = true, id = souvenir.SouvenirID });
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 TempData["UserUsed"] = "The Souvenir being deleted has been ordered in previous orders.Delete those orders before trying again.";
                 return RedirectToAction("Delete");

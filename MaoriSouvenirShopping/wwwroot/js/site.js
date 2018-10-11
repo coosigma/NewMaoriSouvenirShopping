@@ -14,7 +14,7 @@ function onUpdateCartComplete(ajax) {
             '<a asp-action="Details" asp-route-id="' + item.id + '">' + item.name + '</a></div>';
         // item's quantity
         new_string += '<div class="col-sm-3">' + item.quantity+
-            ' <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/RemoveFromCart/' + item.id +'"><span class="glyphicon glyphicon-remove-circle"></span></a></div>';
+            ' <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="~/ShoppingCart/RemoveFromCart/' + item.id +'"><span class="glyphicon glyphicon-remove-circle"></span></a></div>';
         // item's price
         new_string += '<div class="col-sm-3">' + item.price.toFixed(2) +'</div></div>';
     });

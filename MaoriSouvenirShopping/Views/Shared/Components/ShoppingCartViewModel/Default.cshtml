@@ -34,7 +34,7 @@
                 <div class="col-sm-2"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirID</a> </div>
                 <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirName</a> </div>
                 <div class="col-sm-3">@item.Souvenir.Category.CategoryName</div>
-                <div class="col-sm-2">@item.Count <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/RemoveFromCart/@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
+                <div class="col-sm-2">@item.Count <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="~/ShoppingCart/RemoveFromCart/@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
                 <div class="col-sm-2">$@item.Souvenir.Price</div>
             </div>
         }
@@ -70,7 +70,7 @@
     <div class="row" id="cart_buttons">
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
-            <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="/ShoppingCart/EmptyCart" class="empty-cart-btn">
+            <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="~/ShoppingCart/EmptyCart" class="empty-cart-btn">
                 Empty Cart <span class="glyphicon glyphicon-remove"></span>
             </a>
         </div>
