@@ -10,9 +10,13 @@ namespace MaoriSouvenirShopping.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "First name")]
+        [Required]
         public string FirstName { get; set; }
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Last name")]
+        [Required]
         public string LastName { get; set; }
         public string FullName
         {
