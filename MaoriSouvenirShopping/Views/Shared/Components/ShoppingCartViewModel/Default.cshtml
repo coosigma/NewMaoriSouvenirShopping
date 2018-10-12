@@ -34,7 +34,12 @@
                 <div class="col-sm-2"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirID</a> </div>
                 <div class="col-sm-3"><a asp-action="Details" asp-route-id="@item.Souvenir.SouvenirID">@item.Souvenir.SouvenirName</a> </div>
                 <div class="col-sm-3">@item.Souvenir.Category.CategoryName</div>
-                <div class="col-sm-2">@item.Count <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="~/ShoppingCart/RemoveFromCart/@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
+                <div class="col-sm-2">
+                    @item.Count
+                   @if (!@ViewContext.RouteData.Values["controller"].Equals("Order") && !@ViewContext.RouteData.Values["action"].Equals("Create")){
+                      <a data-ajax="true" data-ajax-complete="onUpdateCartComplete" href="~/ShoppingCart/RemoveFromCart/@item.Souvenir.SouvenirID"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                   }
+                </div>
                 <div class="col-sm-2">$@item.Souvenir.Price</div>
             </div>
         }
@@ -65,7 +70,7 @@
         }
     </div>
     <br />
-    @if (@Model.CartItems.Count > 0)
+    @if (@Model.CartItems.Count > 0 && !@ViewContext.RouteData.Values["controller"].Equals("Order") && !@ViewContext.RouteData.Values["action"].Equals("Create"))
         {
     <div class="row" id="cart_buttons">
         <div class="col-sm-2"></div>

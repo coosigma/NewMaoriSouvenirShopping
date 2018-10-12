@@ -67,28 +67,38 @@ namespace MaoriSouvenirShopping.Controllers
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
 
-            if (ModelState.IsValid)
+            try
             {
-
-                ShoppingCart cart = ShoppingCart.GetCart(this.HttpContext);
-                List<CartItem> items = cart.GetCartItems(_context);
-                List<OrderDetail> details = new List<OrderDetail>();
-                foreach (CartItem item in items)
+                if (ModelState.IsValid)
                 {
 
-                    OrderDetail detail = CreateOrderDetailForThisItem(item);
-                    detail.Order = order;
-                    details.Add(detail);
-                    _context.Add(detail);
+                    ShoppingCart cart = ShoppingCart.GetCart(this.HttpContext);
+                    List<CartItem> items = cart.GetCartItems(_context);
+                    List<OrderDetail> details = new List<OrderDetail>();
+                    foreach (CartItem item in items)
+                    {
 
+                        OrderDetail detail = CreateOrderDetailForThisItem(item);
+                        detail.Order = order;
+                        details.Add(detail);
+                        _context.Add(detail);
+
+                    }
+                    order.User = user;
+                    order.OrderDate = DateTime.Today;
+                    order.TotalCost = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
+                    order.OrderDetails = details;
+                    _context.SaveChanges();
+                    return RedirectToAction("Purchased", new RouteValueDictionary(
+                    new { action = "Purchased", id = order.OrderID }));
                 }
-                order.User = user;
-                order.OrderDate = DateTime.Today;
-                order.TotalCost = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
-                order.OrderDetails = details;
-                _context.SaveChanges();
-                return RedirectToAction("Purchased", new RouteValueDictionary(
-                new { action = "Purchased", id = order.OrderID }));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to Checkout. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
             return View(order);
         }
