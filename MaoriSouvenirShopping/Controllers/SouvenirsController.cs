@@ -139,17 +139,7 @@ namespace MaoriSouvenirShopping.Controllers
         // GET: Souvenirs/Create
         public IActionResult Create()
         {
-            var categories = _context.Categories.AsNoTracking();
-            var category = new Category();
-            try
-            {
-                category = categories.Where(c => c.CategoryName == "MaoriGift").Single();
-                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", category.CategoryID);
-            } catch (InvalidOperationException)
-            {
-                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", 0);
-            }
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName");
+            loadViewData();
             return View();
         }
 
@@ -192,10 +182,14 @@ namespace MaoriSouvenirShopping.Controllers
                 {
                     _context.Add(souvenir);
                     await _context.SaveChangesAsync();
-                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenir.CategoryID);
-                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenir.SupplierID);
+                    loadViewData();
                     return RedirectToAction(nameof(Index));
                 }
+                //else
+                //{
+                //    ViewData["ErrorMessage"] = "Please fill out all information correctly.";
+                //    return View();
+                //}
             }
             catch (DbUpdateException /* ex */)
             {
@@ -204,7 +198,23 @@ namespace MaoriSouvenirShopping.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
+            loadViewData();
             return View(souvenir);
+        }
+        public void loadViewData()
+        {
+            var categories = _context.Categories.AsNoTracking();
+            var category = new Category();
+            try
+            {
+                category = categories.Where(c => c.CategoryName == "MaoriGift").Single();
+                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", category.CategoryID);
+            }
+            catch (InvalidOperationException)
+            {
+                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", 0);
+            }
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName");
         }
 
         // GET: Souvenirs/Edit/5
@@ -221,8 +231,7 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenir.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenir.SupplierID);
+            loadViewData();
             return View(souvenir);
         }
 
@@ -245,8 +254,7 @@ namespace MaoriSouvenirShopping.Controllers
                 await TryUpdateModelAsync(deletedSouvenir);
                 ModelState.AddModelError(string.Empty,
                     "Unable to save changes. The Souvenir was deleted by another Administrator.");
-                ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", deletedSouvenir.CategoryID);
-                ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", deletedSouvenir.SupplierID);
+                loadViewData();
                 return View(deletedSouvenir);
             }
 
@@ -288,8 +296,7 @@ namespace MaoriSouvenirShopping.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenirToUpdate.CategoryID);
-                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenirToUpdate.SupplierID);
+                    loadViewData();
                     return RedirectToAction(nameof(Index));
                 }
                 //catch (DbUpdateException /* ex */)
