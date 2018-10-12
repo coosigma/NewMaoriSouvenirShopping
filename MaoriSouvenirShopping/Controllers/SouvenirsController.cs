@@ -185,11 +185,6 @@ namespace MaoriSouvenirShopping.Controllers
                     loadViewData();
                     return RedirectToAction(nameof(Index));
                 }
-                //else
-                //{
-                //    ViewData["ErrorMessage"] = "Please fill out all information correctly.";
-                //    return View();
-                //}
             }
             catch (DbUpdateException /* ex */)
             {
@@ -295,17 +290,13 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 try
                 {
-                    await _context.SaveChangesAsync();
-                    loadViewData();
-                    return RedirectToAction(nameof(Index));
+                    if (ModelState.IsValid)
+                    {
+                        await _context.SaveChangesAsync();
+                        loadViewData();
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
-                //catch (DbUpdateException /* ex */)
-                //{
-                //    //Log the error (uncomment ex variable name and write a log.)
-                //    ModelState.AddModelError("", "Unable to save changes. " +
-                //        "Try again, and if the problem persists, " +
-                //        "see your system administrator.");
-                //}
                 catch (DbUpdateConcurrencyException ex)
                 {
                     var exceptionEntry = ex.Entries.Single();
@@ -355,9 +346,15 @@ namespace MaoriSouvenirShopping.Controllers
                         ModelState.Remove("RowVersion");
                     }
                 }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator.");
+                }
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenirToUpdate.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenirToUpdate.SupplierID);
+            loadViewData();
             return View(souvenirToUpdate);
         }
 
