@@ -16,7 +16,7 @@ namespace MaoriSouvenirShopping.Services
         {
 
             var mes = new MimeMessage();
-            mes.From.Add(new MailboxAddress("Test Account", "testuser01@unitectest.onmicrosoft.com"));
+            mes.From.Add(new MailboxAddress("liangb05", "liangb05@myunitec.ac.nz"));
             mes.To.Add(new MailboxAddress("User", email));
             mes.Subject = subject;
 
@@ -38,7 +38,7 @@ namespace MaoriSouvenirShopping.Services
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                 // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("testuser01@unitectest.onmicrosoft.com", "testTOOL35");
+                client.Authenticate("liangb05@myunitec.ac.nz", "12021985");
 
                 client.Send(mes);
                 client.Disconnect(true);
